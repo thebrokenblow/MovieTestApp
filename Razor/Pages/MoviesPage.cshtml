@@ -1,0 +1,35 @@
+﻿@page
+@model Razor.Pages.MoviesPageModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<div class="container">
+    @foreach (var movie in Movie.MovieStorage.myMovies)
+    {
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="@movie.URL" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">@movie.Title</h5>
+                <p class="card-text">@movie.Description</p>
+                <p class="card-text">@movie.Cost</p>
+                <a href="#" class="btn btn-primary">Купить билет</a>
+            </div>
+        </div>
+    }
+    <div class="row">
+        <p>Создание нового фильма</p>
+        <form method="post">
+            <div>
+                <input asp-for="MyMovie.Title" type="text" placeholder="Введите название фильма" />
+            </div>
+            <div>
+                <input asp-for="MyMovie.Description" type="text" placeholder="Введите описание фильма" />
+            </div>
+            <div>
+                <input asp-for="MyMovie.Cost" type="text" placeholder="Введите цену фильма" />
+            </div>
+            <div>
+                <input asp-for="MyMovie.URL" type="text" placeholder="Введите адрес фотографии" />
+            </div>
+            <input type="submit">
+        </form>
+    </div>
+</div>

@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35013.160
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Razor", "Razor\Razor.csproj", "{C8AD6E46-4160-48DA-84E9-11D51449CF6F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movie", "Movie\Movie.csproj", "{38BDF82A-3F96-4C75-8249-9B82DB463532}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C8AD6E46-4160-48DA-84E9-11D51449CF6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8AD6E46-4160-48DA-84E9-11D51449CF6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8AD6E46-4160-48DA-84E9-11D51449CF6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8AD6E46-4160-48DA-84E9-11D51449CF6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38BDF82A-3F96-4C75-8249-9B82DB463532}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38BDF82A-3F96-4C75-8249-9B82DB463532}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38BDF82A-3F96-4C75-8249-9B82DB463532}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38BDF82A-3F96-4C75-8249-9B82DB463532}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {24619020-9DE6-4380-A31D-8357475C057A}
+	EndGlobalSection
+EndGlobal
