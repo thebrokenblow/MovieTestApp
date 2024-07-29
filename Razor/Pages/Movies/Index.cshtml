@@ -1,8 +1,9 @@
 ﻿@page
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @model Razor.Pages.Movies.IndexModel;
 
 <div class="container" style="padding-top: 35px">
-    <a href="./Create" class="btn btn-success">Добавить</a>
+    <a asp-page="/Movies/Create" class="btn btn-success">Добавить</a>
     <div class="row row-cols-4">
         @foreach(var movie in MovieLibrary.MovieStorage.Movies)
         {
@@ -12,7 +13,11 @@
                     <div class="card-body">
                         <h5 class="card-title">@movie.Title</h5>
                         <p class="card-text">@movie.Cost ₽</p>
-                        <a href="Details" class="btn btn-primary">Купить билет</a>
+                        <div class="d-flex justify-content-between">
+                            <a asp-page="/Movies/Details" asp-route-id="@movie.Id" class="btn btn-primary">Купить билет</a>
+                            <a asp-page="/Movies/Edit" asp-route-id="@movie.Id" class="btn btn-primary">Редактировать</a>
+                            <a asp-page="/Movies/Delete" asp-route-id="@movie.Id" class="btn btn-primary">Удалить</a>
+                        </div>
                     </div>
                 </div>
             </div>

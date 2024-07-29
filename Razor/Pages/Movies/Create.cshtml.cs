@@ -16,6 +16,10 @@ public class CreateModel : PageModel
 
     public IActionResult OnPost()
     {
+        var lastMovie = MovieStorage.Movies.Last();
+        Movie.Id = lastMovie.Id;
+        Movie.Id++;
+
         if (Movie is not null && ModelState.IsValid)
         {
             MovieStorage.Movies.Add(Movie);
