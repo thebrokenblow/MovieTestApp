@@ -1,9 +1,0 @@
-﻿namespace Movie;
-
-public class MyMovie
-{
-    public required string Title { get; set; }
-    public required string URL { get; set; }
-    public required string Description { get; set; }
-    public required double Cost { get; set; }
-}
