@@ -1,14 +1,15 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using MovieLibrary;
+using Microsoft.EntityFrameworkCore;
+using Razor.Data;
+using Razor.Model;
 
 namespace Razor.Pages.Movies;
 
-public class DetailsModel : PageModel
+public class DetailsModel(MovieContext movieContext) : PageModel
 {
     public Movie? Movie { get; set; }
-    public void OnGet(int id)
+    public async Task OnGetAsync(int id)
     {
-        Movie = MovieStorage.Movies.Find(x => x.Id == id);
+        Movie = await movieContext.Movies.FirstAsync(movie => movie.Id == id);
     }
 }

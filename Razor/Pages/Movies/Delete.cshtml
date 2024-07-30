@@ -1,30 +1,11 @@
 ﻿@page
-@model Razor.Pages.Movies.DeleteModel
-@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using Razor.Pages.Movies
+@model DeleteModel
 
-<form method="post" class="cd__main">
-    <div class="container my-5">
-        <div class="row">
-            <div class="col-md-5">
-                <div class="main-img">
-                    <img class="img-fluid" src="@Model.Movie.URL" alt="@Model.Movie.Title">
-                </div>
-            </div>
-            <div class="col-md-7">
-                <div class="main-description px-2">
-                    <div class="category text-bold">
-                        @Model.Movie.Title
-                    </div>
-                    <div class="product-title text-bold my-3">
-                        @Model.Movie.Description
-                    </div>
-
-                    <div class="price-area my-4">
-                        <p class="old-price mb-1">Цена билета @Model.Movie.Cost ₽</p>
-                    </div>
-                    <button type="submit" asp-page-handler="delete" asp-route-id="@Model.Movie.Id" class="btn btn-danger">Удалить</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</form>
+<div class="container">
+    <form method="post">
+        <h1>Вы уверены, что хотите удалить фильм @Model.Movie.Title</h1>
+        <p>@Model.Movie.Description</p>
+        <button type="submit" asp-route-id="@Model.Movie.Id" asp-page-handler="delete" class="btn btn-primary">Удалить</button>
+    </form>
+</div>

@@ -1,44 +1,33 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using MovieLibrary;
+using Microsoft.EntityFrameworkCore;
+using Razor.Data;
+using Razor.Model;
 
 namespace Razor.Pages.Movies;
 
-public class EditModel : PageModel
+public class EditModel(MovieContext movieContext) : PageModel
 {
     [BindProperty]
-    public Movie Movie { get; set; } = default!;
+    public Movie? Movie { get; set; }
 
-    public IActionResult OnGet(int? id)
+    public async Task OnGetAsync(int id)
     {
-        if (id == null)
-        {
-            return NotFound();
-        }
-
-        var movie = MovieStorage.Movies.First(movie => movie.Id == id);
-        if (movie == null)
-        {
-            return NotFound();
-        }
-
-        Movie = movie;
-
-        return Page();
+        Movie = await movieContext.Movies.FirstAsync(movie => movie.Id == id);
     }
 
-    public IActionResult OnPostAsync()
+    public async Task<IActionResult> OnPostUpdate(int id)
     {
         if (!ModelState.IsValid)
         {
             return Page();
         }
 
-        var oldMovie = MovieStorage.Movies.First(movie => movie.Id == Movie.Id);
-        oldMovie.Title = Movie.Title;
-        oldMovie.URL = Movie.URL;
-        oldMovie.Description = Movie.Description;
-        oldMovie.Cost = Movie.Cost;
+        var updatedMovie = await movieContext.Movies.FirstAsync(movie => movie.Id == id);
+        updatedMovie.Title = Movie.Title;
+        updatedMovie.URL = Movie.URL;
+        updatedMovie.Description = Movie.Description;
+        await movieContext.SaveChangesAsync();
 
         return RedirectToPage("./Index");
     }

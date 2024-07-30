@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using Razor.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 ConfigurationServices(builder.Services);
@@ -10,6 +13,10 @@ app.Run();
 
 void ConfigurationServices(IServiceCollection services)
 {
+    services.AddDbContext<MovieContext>(options => 
+        options.UseSqlServer(builder.Configuration.GetConnectionString("MovieContext") ?? 
+        throw new InvalidOperationException("Connection string 'MovieContext' not found.")));
+
     services.AddRazorPages();
 }
 

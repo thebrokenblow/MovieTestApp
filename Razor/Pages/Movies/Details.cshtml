@@ -1,7 +1,5 @@
 ﻿@page
 @model Razor.Pages.Movies.DetailsModel
-@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-
 
 <div class="cd__main">
     <div class="container my-5">
@@ -18,10 +16,6 @@
                     </div>
                     <div class="product-title text-bold my-3">
                         @Model.Movie.Description
-                    </div>
-
-                    <div class="price-area my-4">
-                        <p class="old-price mb-1">Цена билета @Model.Movie.Cost ₽</p>
                     </div>
 
                     <a class="btn btn-primary" asp-page="./Index">Назад</a>

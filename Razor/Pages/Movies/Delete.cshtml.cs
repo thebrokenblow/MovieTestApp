@@ -1,21 +1,25 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using MovieLibrary;
+using Microsoft.EntityFrameworkCore;
+using Razor.Data;
+using Razor.Model;
 
 namespace Razor.Pages.Movies;
 
-public class DeleteModel : PageModel
+public class DeleteModel(MovieContext movieContext) : PageModel
 {
     public Movie? Movie { get; set; }
-    public void OnGet(int? id)
+    public async Task OnGetAsync(int id)
     {
-        Movie = MovieStorage.Movies.First(movie => movie.Id == id);
+        Movie = await movieContext.Movies.FirstAsync(movie => movie.Id == id);
     }
 
-    public IActionResult OnPostDelete(int id)
+    public async Task<IActionResult> OnPostDeleteAsync(int id)
     {
-        var movie = MovieStorage.Movies.First(movie => movie.Id == id);
-        MovieStorage.Movies.Remove(movie);
+
+        var movie = await movieContext.Movies.FirstAsync(movie => movie.Id == id);
+        movieContext.Movies.Remove(movie);
+        await movieContext.SaveChangesAsync();
 
         return RedirectToPage("./Index");
     }

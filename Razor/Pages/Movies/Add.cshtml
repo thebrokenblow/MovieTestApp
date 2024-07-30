@@ -1,14 +1,11 @@
 ﻿@page
 @using Razor.Pages.Movies
-@model EditModel
+@model AddModel
 
 <form method="post">
-    <div hidden="hidden">
-        <input asp-for="Movie.Id" type="number" />
-    </div>
     <div>
         <label>Название фильма</label>
-        <input asp-for="Movie.Title" type="text" />
+        <input asp-for="Movie.Title" type="text" style="width: 400px" />
         <span asp-validation-for="Movie.Title" class="text-danger"></span>
     </div>
     <div>
@@ -21,5 +18,5 @@
         <input asp-for="Movie.Description" type="text" />
         <span asp-validation-for="Movie.Description" class="text-danger"></span>
     </div>
-    <button type="submit" asp-route-id="@Model.Movie.Id" asp-page-handler="update" class="btn btn-primary">Обновить</button>
+    <input type="submit" />
 </form>
