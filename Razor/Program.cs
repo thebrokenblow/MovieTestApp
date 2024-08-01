@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Razor.Data;
+using Razor.Model;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,7 @@ app.Run();
 
 void ConfigurationServices(IServiceCollection services)
 {
+    services.AddSingleton<Order>();
     services.AddDbContext<MovieContext>(options => 
         options.UseSqlServer(builder.Configuration.GetConnectionString("MovieContext") ?? 
         throw new InvalidOperationException("Connection string 'MovieContext' not found.")));

@@ -1,26 +1,54 @@
 ﻿@page
 @model Razor.Pages.Movies.DetailsModel
 
-<div class="cd__main">
-    <div class="container my-5">
-        <div class="row">
-            <div class="col-md-5">
-                <div class="main-img">
-                    <img class="img-fluid" src="@Model.Movie.URL" alt="@Model.Movie.Title">
+@if (Model.Shedule is not null)
+{
+    <div class="cd__main">
+        <div class="container my-5">
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="main-img">
+                        <img class="img-fluid" src="@Model.Shedule.Movie.URL" alt="@Model.Shedule.Movie.Title">
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-7">
-                <div class="main-description px-2">
-                    <div class="category text-bold">
-                        @Model.Movie.Title
-                    </div>
-                    <div class="product-title text-bold my-3">
-                        @Model.Movie.Description
-                    </div>
+                <div class="col-md-7">
+                    <div class="main-description px-2">
+                        <div class="category text-bold">
+                            @Model.Shedule.Movie.Title
+                        </div>
+                        <div class="product-title text-bold my-3">
+                            @Model.Shedule.Movie.Description
+                        </div>
+                        <div class="product-title text-bold my-3">
+                            @Model.Shedule.Cost ₽
+                        </div>
 
-                    <a class="btn btn-primary" asp-page="./Index">Назад</a>
+                        <div class="product-title text-bold my-3">
+
+                            @Model.Shedule.StartFilm.Hour : @Model.Shedule.StartFilm.Minute
+                        </div>
+
+                        <h1>Купить билет</h1>
+                        <form class="d-flex" method="post">
+                            @for (int i = 0; i < 10; i++)
+                            {
+                                <button 
+                                    type="submit"
+                                    asp-route-id="@Model.Shedule.Id"
+                                    asp-route-i="@i"
+                                    asp-page-handler="AddTicket"
+                                    onclick="@Model.Test()"
+                                    class="btn btn-primary">@i место</button>
+                            }
+                        </form>
+                        <form method="post">
+                            
+                            
+                        </form>
+                        <a class="btn btn-primary" asp-page="./Index">Назад</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+}

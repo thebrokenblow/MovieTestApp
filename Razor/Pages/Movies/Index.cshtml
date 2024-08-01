@@ -6,32 +6,31 @@
     <a asp-page="/Movies/Add" class="btn btn-success">Добавить</a>
 
     <form method="post">
-        <input type="date" min="@DateTime.Now" max="@Model.MaxDateMovie" />
+        <p>Мы показываем фильма с @Model.MinDateMovie по @Model.MaxDateMovie</p>
+        <input type="date" asp-for="SearchDateMovie" asp-format="{0:yyyy-MM-ddTHH:mm}" value="@Model.SelectedDateMovie" min="@Model.MinDateMovie" max="@Model.MaxDateMovie">
         <p>Поиск фильма
-            <input type="text" asp-for="SearchTitleMovie"  value="" />
+            <input type="text" asp-for="SearchTitleMovie"  />
             <input type="submit" />
         </p>
     </form>
 
     <div class="row row-cols-4">
-        @foreach(var movie in Model.Movies)
+        @if (Model.Shedules is not null)
         {
-            <div class="col" style="margin-top:20px">
-                <div class="card" style="width: 18rem; height: 350px">
-                    <img src="@movie.URL" class="card-img-top" alt="@movie.Title">
-                    <div class="card-body">
-                        <h5 class="card-title">@movie.Title</h5>
-                       
-                        <div class="d-flex justify-content-between">
-                            <a asp-page="/Movies/Delete" asp-route-id="@movie.Id" class="btn btn-primary">Удалить</a>
-                            <a asp-page="/Movies/Details" asp-route-id="@movie.Id" class="btn btn-primary">Купить билет</a>
-                        </div>
-                        <div>
-                            <a asp-page="/Movies/Edit" asp-route-id="@movie.Id" class="btn btn-primary">Редактировать</a>
+            @foreach (var shedule in Model.Shedules)
+            {
+                <div class="col" style="margin-top:20px">
+                    <div class="card" style="width: 18rem; height: 350px">
+                        <img src="@shedule.Movie.URL" class="card-img-top" alt="@shedule.Movie.Title">
+                        <div class="card-body">
+                            <h5 class="card-title">@shedule.Movie.Title</h5>
+                            <span>@shedule.Cost ₽</span>
+                            <h5 class="card-title">@Model.FormateTime(@shedule.StartFilm.Hour) : @Model.FormateTime(@shedule.StartFilm.Minute)</h5>
+                            <a asp-page="/Movies/Details" asp-route-id="@shedule.Id" class="btn btn-primary">Купить билет</a>
                         </div>
                     </div>
                 </div>
-            </div>
+            }
         }
     </div>
 </div>
