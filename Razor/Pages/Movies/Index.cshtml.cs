@@ -4,109 +4,82 @@ using Microsoft.EntityFrameworkCore;
 using Razor.Data;
 using Razor.Model;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace Razor.Pages.Movies;
 
-public class IndexModel(MovieContext movieContext) : PageModel
+public class IndexModel(MovieContext movieContext, FormattedSchedule formattedSchedule) : PageModel
 {
-    public IEnumerable<Shedule>? Shedules { get; set; }
-
+    public Dictionary<Movie, List<Schedule>>? SchedulesByMovie { get; set; }
     public string? MinDateMovie { get; set; }
     public string? MaxDateMovie { get; set; }
     public string? SelectedDateMovie { get; set; }
 
-    //Так как при получении месяца или дня меньше 10 возвращаемый формат будет
-    //в диапазоне от 1 до 9, нам нужен формат 01-09.
-    private const int tenthNumber = 10;
+    private const string FormatDate = "yyyy-MM-dd";
+    private const string FormatFilteredDate = "{0:yyyy-MM-ddTHH:mm}";
 
     public async Task OnGet()
     {
-        Shedules = movieContext.Shedules
-            .Include(shedule => shedule.Movie)
-            .Where(shedule => shedule.StartFilm.Date == DateTime.Now.Date);
+        SchedulesByMovie = await movieContext.Schedules
+            .Include(schedule => schedule.Movie)
+            .Where(schedule => schedule.StartFilm.Date == DateTime.Now.Date)
+            .GroupBy(schedule => schedule.Movie)
+            .ToDictionaryAsync(group => group.Key, group => group.ToList());
 
-        var maxDateMovie = await movieContext.Shedules.MaxAsync(movie => movie.StartFilm);
+        formattedSchedule.SchedulesByMovie = SchedulesByMovie;
 
-        SelectedDateMovie = ChangeFormatDate(DateTime.Now);
-        MinDateMovie = ChangeFormatDate(DateTime.Now);
-        MaxDateMovie = ChangeFormatDate(maxDateMovie);
+        var maxDateMovie = await movieContext.Schedules.MaxAsync(movie => movie.StartFilm);
+
+        SelectedDateMovie = DateTime.Now.ToString(FormatDate);
+        MinDateMovie = DateTime.Now.ToString(FormatDate);
+        MaxDateMovie = maxDateMovie.ToString(FormatDate);
 
         ViewData["Title"] = "Фильмы для показа";
     }
 
-    [BindProperty]
+    [BindProperty(SupportsGet = true)]
     public string? SearchTitleMovie { get; set; }
-    [BindProperty, DisplayFormat(DataFormatString = "{0:yyyy-MM-ddTHH:mm}", ApplyFormatInEditMode = true)]
+
+    [BindProperty(SupportsGet = true), DisplayFormat(DataFormatString = FormatFilteredDate, ApplyFormatInEditMode = true)]
     public DateTime? SearchDateMovie { get; set; }
 
     public async Task OnPostAsync()
     {
-        IEnumerable<Shedule>? filteredShedules = null;
+        IEnumerable<Schedule>? filteredSchedule = null;
 
         if (SearchDateMovie is not null)
         {
-            SelectedDateMovie = ChangeFormatDate(SearchDateMovie.Value);
-
-            filteredShedules = movieContext.Shedules.Include(shedule => shedule.Movie)
-                .Where(shedule =>
-                    shedule.StartFilm.Day == SearchDateMovie.Value.Day &&
-                    shedule.StartFilm.Month == SearchDateMovie.Value.Month);
+            filteredSchedule = movieContext.Schedules.Include(schedule => schedule.Movie)
+                .Where(schedule =>
+                    schedule.StartFilm.Day == SearchDateMovie.Value.Day &&
+                    schedule.StartFilm.Month == SearchDateMovie.Value.Month);
         }
 
         if (SearchTitleMovie is not null)
         {
-            if (filteredShedules is not null)
+            if (filteredSchedule is not null)
             {
-                filteredShedules = filteredShedules.Where(shedule => shedule.Movie.Title.Contains(SearchTitleMovie));
+                filteredSchedule = filteredSchedule.Where(schedule => schedule.Movie.Title.Contains(SearchTitleMovie));
             }
             else
             {
-                filteredShedules = movieContext.Shedules.Where(shedule => shedule.Movie.Title.Contains(SearchTitleMovie));
+                filteredSchedule = movieContext.Schedules.Where(schedule => schedule.Movie.Title.Contains(SearchTitleMovie));
             }
         }
 
-        Shedules = filteredShedules;
-       
-        var maxDateMovie = await movieContext.Shedules.MaxAsync(movie => movie.StartFilm);
-
-        MinDateMovie = ChangeFormatDate(DateTime.Now);
-        MaxDateMovie = ChangeFormatDate(maxDateMovie);
-    }
-
-    public string FormateTime(int time)
-    {
-        if (time == 0)
+        if (filteredSchedule is null)
         {
-            return "00";
-        }
-
-        return time.ToString();
-    }
-
-    private static string ChangeFormatDate(DateTime dateTime)
-    {
-        var strBuilderDate = new StringBuilder();
-        strBuilderDate.Append($"{dateTime.Year}-");
-
-        if (dateTime.Month < tenthNumber)
-        {
-            strBuilderDate.Append($"0{dateTime.Month}-");
+            formattedSchedule.SchedulesByMovie = SchedulesByMovie;
         }
         else
         {
-            strBuilderDate.Append($"dateTime.Month-");
+            formattedSchedule.SchedulesByMovie = filteredSchedule
+                .GroupBy(schedule => schedule.Movie)
+                .ToDictionary(group => group.Key, group => group.ToList());
         }
 
-        if (dateTime.Day < tenthNumber)
-        {
-            strBuilderDate.Append($"0{dateTime.Day}");
-        }
-        else
-        {
-            strBuilderDate.Append($"{dateTime.Day}");
-        }
+        var maxDateMovie = await movieContext.Schedules.MaxAsync(movie => movie.StartFilm);
 
-        return strBuilderDate.ToString();
+        MinDateMovie = DateTime.Now.ToString(FormatDate);
+        MaxDateMovie = maxDateMovie.ToString(FormatDate);
     }
 }

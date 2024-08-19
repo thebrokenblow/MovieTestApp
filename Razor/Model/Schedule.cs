@@ -1,6 +1,6 @@
 ﻿namespace Razor.Model;
 
-public class Shedule
+public class Schedule
 {
     public required int Id { get; set; }
     public required DateTime StartFilm { get; set; }

@@ -7,5 +7,5 @@ public class MovieContext(DbContextOptions<MovieContext> options) : DbContext(op
 {
     public DbSet<Movie> Movies { get; set; }
     public DbSet<HallCinema> HallCinemas { get; set; }
-    public DbSet<Shedule> Shedules { get; set; }
+    public DbSet<Schedule> Schedules { get; set; }
 }

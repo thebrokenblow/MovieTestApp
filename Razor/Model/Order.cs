@@ -3,5 +3,5 @@
 public class Order
 {
     public int ResultCost { get; set; }
-    public List<Shedule> Shedules { get; set; } = [];
+    public List<Schedule> Shedules { get; set; } = [];
 }

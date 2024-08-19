@@ -1,50 +1,41 @@
 ﻿@page
+@using Razor.Components
 @model Razor.Pages.Movies.DetailsModel
 
-@if (Model.Shedule is not null)
+@if (Model.Schedule is not null)
 {
     <div class="cd__main">
         <div class="container my-5">
             <div class="row">
                 <div class="col-md-5">
                     <div class="main-img">
-                        <img class="img-fluid" src="@Model.Shedule.Movie.URL" alt="@Model.Shedule.Movie.Title">
+                        <img class="img-fluid" src="@Model.Schedule.Movie.URL" alt="@Model.Schedule.Movie.Title">
                     </div>
                 </div>
                 <div class="col-md-7">
                     <div class="main-description px-2">
                         <div class="category text-bold">
-                            @Model.Shedule.Movie.Title
+                            @Model.Schedule.Movie.Title
                         </div>
                         <div class="product-title text-bold my-3">
-                            @Model.Shedule.Movie.Description
+                            @Model.Schedule.Movie.Description
                         </div>
                         <div class="product-title text-bold my-3">
-                            @Model.Shedule.Cost ₽
+                            @Model.Schedule.Cost ₽
                         </div>
 
                         <div class="product-title text-bold my-3">
-
-                            @Model.Shedule.StartFilm.Hour : @Model.Shedule.StartFilm.Minute
+                            @Model.Schedule.StartFilm.Hour.ToString("00") : @Model.Schedule.StartFilm.Minute.ToString("00")
                         </div>
 
-                        <h1>Купить билет</h1>
-                        <form class="d-flex" method="post">
-                            @for (int i = 0; i < 10; i++)
-                            {
-                                <button 
-                                    type="submit"
-                                    asp-route-id="@Model.Shedule.Id"
-                                    asp-route-i="@i"
-                                    asp-page-handler="AddTicket"
-                                    onclick="@Model.Test()"
-                                    class="btn btn-primary">@i место</button>
-                            }
-                        </form>
-                        <form method="post">
-                            
-                            
-                        </form>
+                        <div class="row row-cols-4">
+                            <form method="get">
+                                @for (int i = 0; i < 10; i++)
+                                {
+                                    <button type="submit" asp-route-i="@i" asp-page-handler="delete" class="btn btn-primary">Удалить</button>
+                                }
+                            </form>
+                        </div>
                         <a class="btn btn-primary" asp-page="./Index">Назад</a>
                     </div>
                 </div>
@@ -52,3 +43,4 @@
         </div>
     </div>
 }
+

@@ -1,34 +1,40 @@
 ﻿@page
+@using Razor.Components
 @using Razor.Pages.Movies
 @model IndexModel
 
 <div class="container" style="padding-top: 35px">
-    <a asp-page="/Movies/Add" class="btn btn-success">Добавить</a>
-
     <form method="post">
         <p>Мы показываем фильма с @Model.MinDateMovie по @Model.MaxDateMovie</p>
         <input type="date" asp-for="SearchDateMovie" asp-format="{0:yyyy-MM-ddTHH:mm}" value="@Model.SelectedDateMovie" min="@Model.MinDateMovie" max="@Model.MaxDateMovie">
-        <p>Поиск фильма
-            <input type="text" asp-for="SearchTitleMovie"  />
+        <p>
+            Поиск фильма
+            <input type="text" asp-for="SearchTitleMovie" />
             <input type="submit" />
         </p>
     </form>
-
     <div class="row row-cols-4">
-        @if (Model.Shedules is not null)
+        @if (Model.SchedulesByMovie is not null)
         {
-            @foreach (var shedule in Model.Shedules)
+            foreach (var schedulesByMovie in Model.SchedulesByMovie)
             {
-                <div class="col" style="margin-top:20px">
-                    <div class="card" style="width: 18rem; height: 350px">
-                        <img src="@shedule.Movie.URL" class="card-img-top" alt="@shedule.Movie.Title">
-                        <div class="card-body">
-                            <h5 class="card-title">@shedule.Movie.Title</h5>
-                            <span>@shedule.Cost ₽</span>
-                            <h5 class="card-title">@Model.FormateTime(@shedule.StartFilm.Hour) : @Model.FormateTime(@shedule.StartFilm.Minute)</h5>
-                            <a asp-page="/Movies/Details" asp-route-id="@shedule.Id" class="btn btn-primary">Купить билет</a>
-                        </div>
+                var schedules = Model.SchedulesByMovie[schedulesByMovie.Key];
+
+                <div class="card gap-3" style="width: 18rem;">
+                    <img src="@schedulesByMovie.Key.URL" class="card-img-top" alt="@schedulesByMovie.Key.Title">
+                    <div class="card-body">
+                        <h5 class="card-title">@schedulesByMovie.Key.Title</h5>
                     </div>
+                    <ul class="list-group list-group-flush">
+                        @foreach (var schedule in schedules)
+                        {
+                            <li class="list-group-item">
+                                @schedule.StartFilm.Hour.ToString("00") : @schedule.StartFilm.Minute.ToString("00") |
+                                @schedule.Cost ₽
+                                <a class="btn btn-primary" asp-page="./Details" asp-route-id="@schedule.Id">Купить</a>
+                            </li>
+                        }
+                    </ul>
                 </div>
             }
         }

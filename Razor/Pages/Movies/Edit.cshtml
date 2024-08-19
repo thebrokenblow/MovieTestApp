@@ -2,24 +2,25 @@
 @using Razor.Pages.Movies
 @model EditModel
 
-<form method="post">
+<form method="post" enctype="multipart/form-data">
     <div hidden="hidden">
-        <input asp-for="Movie.Id" type="number" />
+        <input asp-for="MovieViewModel.Id" type="number" />
     </div>
     <div>
         <label>Название фильма</label>
-        <input asp-for="Movie.Title" type="text" />
-        <span asp-validation-for="Movie.Title" class="text-danger"></span>
+        <input asp-for="MovieViewModel.Title" type="text" />
+        <span asp-validation-for="MovieViewModel.Title" class="text-danger"></span>
     </div>
-    <div>
-        <label>Ссылка на фото</label>
-        <input asp-for="Movie.URL" type="text" />
-        <span asp-validation-for="Movie.URL" class="text-danger"></span>
+    <div class="form-row form-group">
+        <div class="col">
+            <input asp-for="MovieViewModel.URL" type="file" class="form-control form-control-lg" placeholder="Image" />
+            <span asp-validation-for="MovieViewModel.URL" class="text-danger"></span>
+        </div>
     </div>
     <div>
         <label>Описание фильма</label>
-        <input asp-for="Movie.Description" type="text" />
-        <span asp-validation-for="Movie.Description" class="text-danger"></span>
+        <input asp-for="MovieViewModel.Description" type="text" />
+        <span asp-validation-for="MovieViewModel.Description" class="text-danger"></span>
     </div>
-    <button type="submit" asp-route-id="@Model.Movie.Id" asp-page-handler="update" class="btn btn-primary">Обновить</button>
+    <button type="submit" asp-route-id="@Model.MovieViewModel.Id" asp-page-handler="update" class="btn btn-primary">Обновить</button>
 </form>
